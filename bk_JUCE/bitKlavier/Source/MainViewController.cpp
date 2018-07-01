@@ -121,6 +121,8 @@ timerCallbackCount(0)
 MainViewController::~MainViewController()
 {
     setLookAndFeel(nullptr);
+    sampleCB.setLookAndFeel(nullptr);
+    instrumentCB.setLookAndFeel(nullptr);
     octaveSlider.setLookAndFeel(nullptr);
     mainSlider->setLookAndFeel(nullptr);
     removeKeyListener(this);
@@ -491,6 +493,8 @@ void MainViewController::fillSampleCB()
     sampleCB.addItem("Piano (medium)", 3);
     sampleCB.addItem("Piano (heavy)", 4);
     
+    sampleCB.addSeparator();
+    
     if (processor.currentSampleType <= BKLoadHeavy)
     {
         sampleCB.setSelectedItemIndex(processor.currentSampleType, dontSendNotification);
@@ -504,6 +508,7 @@ void MainViewController::fillSampleCB()
 #else
         String name = sf.fromLastOccurrenceOf("/", false, true).upToFirstOccurrenceOf(".sf2", false, true);
 #endif
+
         sampleCB.addItem(name, id);
         
         if ((processor.currentSampleType == BKLoadSoundfont) && (name == processor.getCurrentSoundfontName()))
@@ -533,6 +538,7 @@ void MainViewController::fillInstrumentCB()
         int i = 1;
         for (auto inst : processor.instrumentNames)
         {
+            if (inst == "") inst = "Inst" + String(i);
             instrumentCB.addItem(inst, i++);
         }
         
