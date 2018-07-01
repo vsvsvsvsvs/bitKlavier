@@ -125,7 +125,11 @@ PopupMenu HeaderViewController::getLoadMenu(void)
     int i = 0;
     for (auto sf : processor.soundfontNames)
     {
-        String sfName = sf.fromLastOccurrenceOf("/", false, true).upToFirstOccurrenceOf(".sf2", false, true);
+#if JUCE_WINDOWS
+        String sfName = sf.fromLastOccurrenceOf("\\", false, true).upToFirstOccurrenceOf(".sf2", false, true);
+#else
+		String sfName = sf.fromLastOccurrenceOf("/", false, true).upToFirstOccurrenceOf(".sf2", false, true);
+#endif
         loadMenu.addItem(SOUNDFONT_ID + (i++), sfName);
     }
     

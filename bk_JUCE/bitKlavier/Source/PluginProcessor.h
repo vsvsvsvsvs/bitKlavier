@@ -296,7 +296,11 @@ public:
     
     inline String getCurrentSoundfontName(void)
     {
-        return (currentSoundfont.fromLastOccurrenceOf("/", false, true).upToFirstOccurrenceOf(".sf2", false, true));
+#if JUCE_WINDOWS
+        return (currentSoundfont.fromLastOccurrenceOf("\\", false, true).upToFirstOccurrenceOf(".sf2", false, true));
+#else
+		return (currentSoundfont.fromLastOccurrenceOf("/", false, true).upToFirstOccurrenceOf(".sf2", false, true));
+#endif
     }
     
 private:

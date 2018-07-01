@@ -397,7 +397,11 @@ void BKAudioProcessor::duplicateGallery(String newName)
     File oldFile (gallery->getURL());
     String baseURL = oldFile.getParentDirectory().getFullPathName();
     
+#if JUCE_WINDOWS
+	String newURL = baseURL + "\\" + newName + ".xml";
+#else
     String newURL = baseURL + "/" + newName + ".xml";
+#endif
     
     DBG("to create: " + newURL);
     
@@ -412,8 +416,13 @@ void BKAudioProcessor::renameGallery(String newName)
     File oldFile (gallery->getURL());
     String baseURL = oldFile.getParentDirectory().getFullPathName();
     
-    String newURL = baseURL + "/" + newName + ".xml";
-    String oldURL = baseURL + "/" + oldName + ".xml";
+#if JUCE_WINDOWS
+    String newURL = baseURL + "\\" + newName + ".xml";
+    String oldURL = baseURL + "\\" + oldName + ".xml";
+#else
+	String newURL = baseURL + "/" + newName + ".xml";
+	String oldURL = baseURL + "/" + oldName + ".xml";
+#endif
     
     DBG("to create: " + newURL);
     DBG("to delete: " + oldURL);
@@ -990,8 +999,10 @@ void BKAudioProcessor::saveCurrentGallery(void)
     {
 #if JUCE_IOS
         writeCurrentGalleryToURL( File::getSpecialLocation(File::userDocumentsDirectory).getFullPathName() + "/" + gallery->getName());
-#else
+#elif JUCE_MAC
         writeCurrentGalleryToURL( File::getSpecialLocation(File::userDocumentsDirectory).getFullPathName() + "/bitKlavier resources/galleries/" + gallery->getName());
+#elif JUCE_WINDOWS
+		writeCurrentGalleryToURL(File::getSpecialLocation(File::userDocumentsDirectory).getFullPathName() + "\\bitKlavier resources\\galleries\\" + gallery->getName());
 #endif
     }
     else
