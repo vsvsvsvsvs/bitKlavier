@@ -474,8 +474,9 @@ void SpringTuning::retuneIndividualSpring(Spring::Ptr spring)
     //set resting length to interval scale without regard to intervalFundamental
     if(!usingFundamentalForIntervalSprings ||
        interval == 7 ||
-       interval == 5 ||
-       interval == 4)
+       interval == 5        //||
+       //interval == 4      //DLT: removing M3 from this
+       )
     {
         int diff = spring->getA()->getRestX() - spring->getB()->getRestX();
         spring->setRestingLength(fabs(diff) + intervalTuning[interval]);
